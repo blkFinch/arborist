@@ -1,45 +1,58 @@
-//css from https://daisyui.com/components/navbar/
+import { useState } from "react";
+import styled from "styled-components";
+import { MenuIcon } from "../icons/menuIcon";
 
-// TODO: import svgs as react components https://stackoverflow.com/questions/70309561/unable-to-import-svg-with-vite-as-reactcomponent
+const Navlist = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+`;
+
+const TitleLink = styled.a`
+  font-size: 22px;
+`;
+
 function Navbar() {
+  const [openDropdown, setOpenDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setOpenDropdown(!openDropdown);
+  }
+
   return (
     <>
-      <div className="navbar bg-neutral text-neutral-content">
-        <label tabIndex={0} className="btn btn-ghost ">
-        <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />
-          </svg>
-        </label>
-        <div className="dropdown">
-          <label tabIndex={1} className="btn btn-ghost">
-          Arborist
-          </label>
-          <ul
-            tabIndex={1}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <a>Outline View</a>
-            </li>
-            <li>
-              <a>Help</a>
-            </li>
-            <li>
-              <a>Hotkeys</a>
-            </li>
-          </ul>
-        </div>
+      <div className="topnav">
+        <Navlist>
+          <li>
+            <a>
+              <MenuIcon />
+            </a>
+          </li>
+          <li>
+            <TitleLink onClick={toggleDropdown}>Arborist</TitleLink>
+          </li>
+        </Navlist>
+        {openDropdown ? <div>Is Open</div> : <div>Is Closed</div>}
       </div>
     </>
   );
