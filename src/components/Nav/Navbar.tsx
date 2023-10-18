@@ -1,6 +1,6 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { MenuIcon } from "../icons/menuIcon";
+import Dropdown  from "./Dropdown"
 
 const Navlist = styled.ul`
   list-style-type: none;
@@ -28,16 +28,7 @@ li a:hover {
 }
 `;
 
-const TitleLink = styled.a`
-  font-size: 22px;
-`;
-
 function Navbar() {
-  const [openDropdown, setOpenDropdown] = useState(false);
-
-  const toggleDropdown = () => {
-    setOpenDropdown(!openDropdown);
-  }
 
   return (
     <>
@@ -49,10 +40,9 @@ function Navbar() {
             </a>
           </li>
           <li>
-            <TitleLink onClick={toggleDropdown}>Arborist</TitleLink>
+            <Dropdown text="Arborist"/>
           </li>
         </Navlist>
-        {openDropdown ? <div>Is Open</div> : <div>Is Closed</div>}
       </div>
     </>
   );
