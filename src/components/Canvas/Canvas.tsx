@@ -1,7 +1,9 @@
 import { useState } from "react";
 import TextBlock from "./TextBlock";
-import { Node, LinkedList } from "../../utils/DataStuctures";
+import { Node } from "../../utils/DataStuctures";
 
+// TODO: Extract to component that knows if it is active or not 
+// TODO: conditional style if active
 function TextNode({ text, key }: { text: string; key: string }) {
   return <div key={key}>{text}</div>;
 }

@@ -20,6 +20,7 @@ export class Node<T> {
   }
 }
 
+// deprecated -- TODO: remove
 export class LinkedList<T> {
   head: Node<T> | null;
 
