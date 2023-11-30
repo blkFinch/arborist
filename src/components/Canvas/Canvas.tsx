@@ -1,22 +1,40 @@
-import { useState, ReactElement } from "react";
-import { Button } from "@radix-ui/themes";
+import { useState } from "react";
 import TextBlock from "./TextBlock";
+import { Node, LinkedList } from "../../utils/DataStuctures";
 
+function TextNode({ text, key }: { text: string; key: string }) {
+  return <div key={key}>{text}</div>;
+}
 
 function Canvas() {
+  const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
+  const [head, setHead] = useState<Node<string> | null>(null);
 
-  const [textBlocks, setTextBlocks] = useState<ReactElement[]>([]);
+  const addTextBlock = (text: string) => {
+    const newNode = new Node(text);
+    if (head === null) {
+      setHead(newNode);
+    }
+    setTextBlocks([...textBlocks, newNode]);
+  };
 
-  //TODO: make this work so that the child button will always add a new text block under the parent
-  const addTextBlock = () => {
-    setTextBlocks([...textBlocks, <TextBlock addBlock={addTextBlock}/>]);
-  }
+  const deleteTextBlock = (text: string) => {
+    setTextBlocks(textBlocks.filter((block) => block.data !== text));
+  };
+
+  const renderTextBlocks = () => {
+    if (head !== null) {
+      return textBlocks.map((nodeData, i) => (
+        <TextNode key={i.toString()} text={nodeData.data} />
+      ));
+    }
+  };
 
   return (
     <>
-      <Button>Let's go from radix</Button>
-      <TextBlock addBlock={addTextBlock}/>
-      {textBlocks}
+      <h2>Canvas</h2>
+      <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
+      {renderTextBlocks()}
     </>
   );
 }
