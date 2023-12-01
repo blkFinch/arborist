@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TextBlock from "./TextBlock";
-import { Node } from "../../utils/DataStuctures";
+import { Node, Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import TextColumn from "./TextColumn";
 
@@ -10,22 +10,22 @@ const StyledCanvas = styled.div`
 
 function Canvas() {
   const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
-  const [head, setHead] = useState<Node<string> | null>(null);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [stem] = useState<Stem<string>>(new Stem());
 
+  // TODO: can we do this without using an array??
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
-    if (head === null) {
-      setHead(newNode);
-    }
-    setTextBlocks([...textBlocks, newNode]);
+    stem.addNode(newNode);
+    setTextBlocks(stem.getAllNodes()); //we lose all optimizations here :(
     setActiveNodeId(newNode.id);
   };
 
+  // TODO: set active to node.previous
   const deleteTextBlock = () => {
-    setTextBlocks(textBlocks.filter((block) => block.id !== activeNodeId));
-    const newActiveNode = textBlocks.at(-2)?.id || null;
-    setActiveNodeId(newActiveNode);
+    stem.removeNode(activeNodeId);
+    setActiveNodeId(stem.tail?.id || null);
+    setTextBlocks(stem.getAllNodes());
   };
 
   const handleNodeClick = (id: string) => {
@@ -37,7 +37,7 @@ function Canvas() {
       <h2>Canvas</h2>
       <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
       <TextColumn
-        head={head}
+        tail={stem.tail}
         textBlocks={textBlocks}
         activeNodeId={activeNodeId}
         handleNodeClick={handleNodeClick}

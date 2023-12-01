@@ -27,6 +27,7 @@ const StyledTextNode = styled.div<StyledTextNodeProps>`
     `}
 `;
 
+// TODO: when active, make editable
 function TextNode({ text, key, active, handleNodeClick }: TextNodeProps) {
   return (
     <StyledTextNode

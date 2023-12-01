@@ -2,19 +2,19 @@ import TextNode from "./TextNode";
 import { Node } from "../../utils/DataStuctures";
 
 interface TextColumnProps {
-  head: Node<string> | null;
+  tail: Node<string> | null;
   textBlocks: Node<string>[];
   activeNodeId: string | null;
   handleNodeClick: (id: string) => void;
 }
 
 function TextColumn({
-  head,
+  tail,
   textBlocks,
   activeNodeId,
   handleNodeClick,
 }: TextColumnProps) {
-  if (head === null) {
+  if (tail === null) {
     return <div>no text blocks</div>;
   }
 
