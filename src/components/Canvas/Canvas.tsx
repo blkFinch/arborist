@@ -13,7 +13,7 @@ function Canvas() {
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [stem] = useState<Stem<string>>(new Stem());
 
-  // TODO: can we do this without using an array??
+  // TODO: can we do this without using an array?? just pass the stem in, and iterate in the component dummy!
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
     stem.addNode(newNode);
