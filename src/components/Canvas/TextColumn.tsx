@@ -5,9 +5,15 @@ interface TextColumnProps {
   head: Node<string> | null;
   textBlocks: Node<string>[];
   activeNodeId: string | null;
+  handleNodeClick: (id: string) => void;
 }
 
-function TextColumn({ head, textBlocks, activeNodeId }: TextColumnProps) {
+function TextColumn({
+  head,
+  textBlocks,
+  activeNodeId,
+  handleNodeClick,
+}: TextColumnProps) {
   if (head === null) {
     return <div>no text blocks</div>;
   }
@@ -19,6 +25,7 @@ function TextColumn({ head, textBlocks, activeNodeId }: TextColumnProps) {
           key={nodeData.id}
           text={nodeData.data}
           active={nodeData.id === activeNodeId}
+          handleNodeClick={() => handleNodeClick(nodeData.id)}
         />
       ))}
     </div>

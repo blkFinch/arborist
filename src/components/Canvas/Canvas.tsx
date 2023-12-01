@@ -8,7 +8,6 @@ const StyledCanvas = styled.div`
   margin: 20px;
 `;
 
-
 function Canvas() {
   const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
   const [head, setHead] = useState<Node<string> | null>(null);
@@ -29,11 +28,20 @@ function Canvas() {
     setActiveNodeId(newActiveNode);
   };
 
+  const handleNodeClick = (id: string) => {
+    setActiveNodeId(id);
+  };
+
   return (
     <StyledCanvas>
       <h2>Canvas</h2>
       <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
-      <TextColumn head={head} textBlocks={textBlocks} activeNodeId={activeNodeId} />
+      <TextColumn
+        head={head}
+        textBlocks={textBlocks}
+        activeNodeId={activeNodeId}
+        handleNodeClick={handleNodeClick}
+      />
     </StyledCanvas>
   );
 }
