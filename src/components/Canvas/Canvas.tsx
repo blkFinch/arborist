@@ -1,16 +1,18 @@
 import { useState } from "react";
 import TextBlock from "./TextBlock";
+import TextNode from "./TextNode";
 import { Node } from "../../utils/DataStuctures";
+import styled from "styled-components";
 
-// TODO: Extract to component that knows if it is active or not 
-// TODO: conditional style if active
-function TextNode({ text, key }: { text: string; key: string }) {
-  return <div key={key}>{text}</div>;
-}
+const StyledCanvas = styled.div`
+  margin: 20px;
+`;
+
 
 function Canvas() {
   const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
   const [head, setHead] = useState<Node<string> | null>(null);
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
 
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
@@ -18,26 +20,28 @@ function Canvas() {
       setHead(newNode);
     }
     setTextBlocks([...textBlocks, newNode]);
+    setActiveNodeId(newNode.id);
   };
 
   const deleteTextBlock = (text: string) => {
     setTextBlocks(textBlocks.filter((block) => block.data !== text));
   };
 
+  // TODO: refactor into component
   const renderTextBlocks = () => {
     if (head !== null) {
-      return textBlocks.map((nodeData, i) => (
-        <TextNode key={i.toString()} text={nodeData.data} />
+      return textBlocks.map((nodeData) => (
+        <TextNode key={nodeData.id} text={nodeData.data} active={(nodeData.id === activeNodeId)}/>
       ));
     }
   };
 
   return (
-    <>
+    <StyledCanvas>
       <h2>Canvas</h2>
       <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
       {renderTextBlocks()}
-    </>
+    </StyledCanvas>
   );
 }
 

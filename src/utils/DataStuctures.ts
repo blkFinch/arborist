@@ -3,12 +3,14 @@ export class Node<T> {
   public next: Node<T> | null;
   public parent: Node<T> | null;
   public children: Node<T>[];
+  public id: string;
 
   constructor(data: T) {
     this.data = data;
     this.next = null;
     this.parent = null;
     this.children = [];
+    this.id = Date.now().toString(36) + Math.random().toString(36);
   }
 
   updateData(data: T) {
