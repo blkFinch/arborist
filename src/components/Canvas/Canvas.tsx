@@ -1,8 +1,8 @@
 import { useState } from "react";
 import TextBlock from "./TextBlock";
-import TextNode from "./TextNode";
 import { Node } from "../../utils/DataStuctures";
 import styled from "styled-components";
+import TextColumn from "./TextColumn";
 
 const StyledCanvas = styled.div`
   margin: 20px;
@@ -23,24 +23,17 @@ function Canvas() {
     setActiveNodeId(newNode.id);
   };
 
-  const deleteTextBlock = (text: string) => {
-    setTextBlocks(textBlocks.filter((block) => block.data !== text));
-  };
-
-  // TODO: refactor into component
-  const renderTextBlocks = () => {
-    if (head !== null) {
-      return textBlocks.map((nodeData) => (
-        <TextNode key={nodeData.id} text={nodeData.data} active={(nodeData.id === activeNodeId)}/>
-      ));
-    }
+  const deleteTextBlock = () => {
+    setTextBlocks(textBlocks.filter((block) => block.id !== activeNodeId));
+    const newActiveNode = textBlocks.at(-2)?.id || null;
+    setActiveNodeId(newActiveNode);
   };
 
   return (
     <StyledCanvas>
       <h2>Canvas</h2>
       <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
-      {renderTextBlocks()}
+      <TextColumn head={head} textBlocks={textBlocks} activeNodeId={activeNodeId} />
     </StyledCanvas>
   );
 }

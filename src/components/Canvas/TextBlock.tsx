@@ -24,7 +24,7 @@ const StyledButton = styled(Toolbar.Button)`
 
 interface textBlockProps {
   addBlock: (text: string) => void;
-  removeBlock: (text: string) => void;
+  removeBlock: () => void;
 }
 
 function TextBlock({ addBlock, removeBlock }: textBlockProps) {
@@ -41,7 +41,7 @@ function TextBlock({ addBlock, removeBlock }: textBlockProps) {
       <StyledToolbar>
         <StyledButton onClick={() => addBlock(text)}>add</StyledButton>
         <StyledButton>child</StyledButton>
-        <StyledButton onClick={() => removeBlock(text)}>delete</StyledButton>
+        <StyledButton onClick={() => removeBlock()}>delete</StyledButton>
       </StyledToolbar>
     </div>
   );
