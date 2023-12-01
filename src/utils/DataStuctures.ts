@@ -59,7 +59,7 @@ export class Stem<T> {
     if (node?.next) {
       node.next.prev = node.prev;
     }
-    this.table.delete(nodeId);
+    this.table.delete(node.id);
   }
 
   getLastNode() {
