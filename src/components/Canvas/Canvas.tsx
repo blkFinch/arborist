@@ -20,7 +20,6 @@ function Canvas() {
     setActiveNodeId(newNode.id);
   };
 
-  // TODO: set active to node.previous
   const deleteTextBlock = () => {
     const prev = stem.getNode(activeNodeId)?.prev
     const newActive = prev ? prev.id : stem.tail?.id 
@@ -28,6 +27,17 @@ function Canvas() {
     setActiveNodeId(newActive || null);
     setTextBlocks(stem.getAllNodes());
   };
+
+  // TODO: implement
+  const addChild = (text: string) => {
+    const active = stem.getNode(activeNodeId)
+    const childNode = new Node(text)
+    active?.addChild(childNode)
+    // then organize child into next col
+    // perhaps use an array of stems ?? or a linked list of stems??
+    // question: how do we sort the child into position of the next stem?
+    //            it should be by order of parent node, and then by add order?
+  }
 
   const handleNodeClick = (id: string) => {
     setActiveNodeId(id);
