@@ -66,6 +66,11 @@ export class Stem<T> {
     return this.tail;
   }
 
+  getNode(id: string | null){
+    const node = this.table.get(id || "");
+    return node
+  }
+
   // Beware the O(n)
   getAllNodes() {
     return Array.from(this.table.values());

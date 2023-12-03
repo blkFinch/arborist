@@ -13,7 +13,6 @@ function Canvas() {
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [stem] = useState<Stem<string>>(new Stem());
 
-  // TODO: can we do this without using an array?? just pass the stem in, and iterate in the component dummy!
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
     stem.addNode(newNode);
@@ -23,8 +22,10 @@ function Canvas() {
 
   // TODO: set active to node.previous
   const deleteTextBlock = () => {
+    const prev = stem.getNode(activeNodeId)?.prev
+    const newActive = prev ? prev.id : stem.tail?.id 
     stem.removeNode(activeNodeId);
-    setActiveNodeId(stem.tail?.id || null);
+    setActiveNodeId(newActive || null);
     setTextBlocks(stem.getAllNodes());
   };
 
