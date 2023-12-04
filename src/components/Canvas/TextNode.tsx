@@ -16,7 +16,7 @@ const StyledTextNode = styled.div<StyledTextNodeProps>`
   padding: 5px 10px;
   margin: 5px 0px;
   box-shadow: none;
-  max-width: 400px;
+  width: 400px;
   min-height: 50px;
   background-color: ${(props) => props.theme.colors.secondary};
   &:hover,

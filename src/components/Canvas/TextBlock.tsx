@@ -25,11 +25,12 @@ const StyledButton = styled(Toolbar.Button)`
 interface textBlockProps {
   addBlock: (text: string) => void;
   removeBlock: () => void;
+  addChild: (text: string) => void;
 }
 
 // TODO: this is a scaffold control. This should be renamed. In the future this will be replaced
 //       by a rich text editor housed in TextNode
-function TextBlock({ addBlock, removeBlock }: textBlockProps) {
+function TextBlock({ addBlock, removeBlock, addChild }: textBlockProps) {
   const [text, setText] = useState<string>("");
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -42,7 +43,7 @@ function TextBlock({ addBlock, removeBlock }: textBlockProps) {
 
       <StyledToolbar>
         <StyledButton onClick={() => addBlock(text)}>add</StyledButton>
-        <StyledButton>child</StyledButton>
+        <StyledButton onClick={() => addChild(text)}>child</StyledButton>
         <StyledButton onClick={() => removeBlock()}>delete</StyledButton>
       </StyledToolbar>
     </div>
