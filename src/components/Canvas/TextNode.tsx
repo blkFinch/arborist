@@ -12,12 +12,17 @@ interface StyledTextNodeProps {
 }
 
 const StyledTextNode = styled.div<StyledTextNodeProps>`
-  border-radius: 0px;
+  border-radius: 2px;
   padding: 5px 10px;
+  margin: 5px 0px;
   box-shadow: none;
+  max-width: 400px;
+  min-height: 50px;
+  background-color: ${(props) => props.theme.colors.secondary};
   &:hover,
   &:focus {
     background-color: ${(props) => props.theme.colors.info};
+    color: ${(props) => props.theme.colors.text};
   }
   ${(props) =>
     props.active &&
@@ -25,6 +30,10 @@ const StyledTextNode = styled.div<StyledTextNodeProps>`
       background-color: ${(props) => props.theme.colors.soft};
       color: ${(props) => props.theme.colors.dark};
     `}
+`;
+
+const StyledContent = styled.div`
+    padding: 5px 10px;
 `;
 
 // TODO: when active, make editable
@@ -35,7 +44,9 @@ function TextNode({ text, key, active, handleNodeClick }: TextNodeProps) {
       active={active}
       onClick={handleNodeClick}
     >
-      {text}
+        <StyledContent>
+            {text}
+        </StyledContent>
     </StyledTextNode>
   );
 }

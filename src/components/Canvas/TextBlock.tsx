@@ -27,6 +27,8 @@ interface textBlockProps {
   removeBlock: () => void;
 }
 
+// TODO: this is a scaffold control. This should be renamed. In the future this will be replaced
+//       by a rich text editor housed in TextNode
 function TextBlock({ addBlock, removeBlock }: textBlockProps) {
   const [text, setText] = useState<string>("");
 

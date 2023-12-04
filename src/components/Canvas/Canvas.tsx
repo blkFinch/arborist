@@ -11,30 +11,30 @@ const StyledCanvas = styled.div`
 function Canvas() {
   const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
-  const [stem] = useState<Stem<string>>(new Stem());
+  const [activeStem] = useState<Stem<string>>(new Stem());
 
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
-    stem.addNode(newNode);
-    setTextBlocks(stem.getAllNodes()); //we lose all optimizations here :(
+    activeStem.addNode(newNode);
+    setTextBlocks(activeStem.getAllNodes()); //we lose all optimizations here :(
     setActiveNodeId(newNode.id);
   };
 
   const deleteTextBlock = () => {
-    const prev = stem.getNode(activeNodeId)?.prev
-    const newActive = prev ? prev.id : stem.tail?.id 
-    stem.removeNode(activeNodeId);
+    const prev = activeStem.getNode(activeNodeId)?.prev
+    const newActive = prev ? prev.id : activeStem.tail?.id 
+    activeStem.removeNode(activeNodeId);
     setActiveNodeId(newActive || null);
-    setTextBlocks(stem.getAllNodes());
+    setTextBlocks(activeStem.getAllNodes());
   };
 
   // TODO: implement
   const addChild = (text: string) => {
-    const active = stem.getNode(activeNodeId)
+    const active = activeStem.getNode(activeNodeId)
     const childNode = new Node(text)
     active?.addChild(childNode)
     // then organize child into next col
-    // perhaps use an array of stems ?? or a linked list of stems??
+    // perhaps use an array of activeStems ?? or a linked list of stems??
     // question: how do we sort the child into position of the next stem?
     //            it should be by order of parent node, and then by add order?
   }
@@ -48,7 +48,7 @@ function Canvas() {
       <h2>Canvas</h2>
       <TextBlock addBlock={addTextBlock} removeBlock={deleteTextBlock} />
       <TextColumn
-        tail={stem.tail}
+        tail={activeStem.tail}
         textBlocks={textBlocks}
         activeNodeId={activeNodeId}
         handleNodeClick={handleNodeClick}
