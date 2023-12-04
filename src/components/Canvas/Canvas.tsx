@@ -2,41 +2,55 @@ import { useState } from "react";
 import TextBlock from "./TextBlock";
 import { Node, Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
-import TextColumn from "./TextColumn";
+import ColumnContainer from "./ColumnContainer";
 
 const StyledCanvas = styled.div`
   margin: 20px;
 `;
 
-const StyledColumnContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-`;
-
 function Canvas() {
-  // TODO: remove textblocks? Are we using this?
-  const [textBlocks, setTextBlocks] = useState<Node<string>[]>([]);
+  // TODO: implement state management and use that for nodes
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [activeStem, setActiveStem] = useState<Stem<string>>(new Stem());
   const [stems, setStems] = useState<Stem<string>[]>([activeStem]);
+  // const [, forceUpdate] = useReducer(x => x + 1, 0);
+  //used to force re-render of component ffrom https://stackoverflow.com/questions/46240647/how-to-force-a-functional-react-component-to-render/53837442#53837442
 
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
     activeStem.addNode(newNode);
-    setTextBlocks(activeStem.getAllNodes()); //we lose all optimizations here :(
     setActiveNodeId(newNode.id);
   };
 
+  //This logic feels loose to me- make sure we cant delete a stem that still has nodes
+  // TODO: getting null pointer error when deleting last node in stem -- fix this method
   const deleteTextBlock = () => {
-    const prev = activeStem.getNode(activeNodeId)?.prev;
-    const newActive = prev ? prev.id : activeStem.tail?.id;
     activeStem.removeNode(activeNodeId);
-    setActiveNodeId(newActive || null);
-    setTextBlocks(activeStem.getAllNodes());
+
+    //Clean up stem if empty
+    if (activeStem.tail === null) {
+      const newStems = stems.filter((stem) => stem !== activeStem);
+      console.log("stems", stems);
+      console.log("newStems", newStems);
+      setStems(newStems);
+      const newStem = newStems[newStems.length - 1];
+      console.log("stems empty setting new stem", newStem);
+      console.log("stems", stems);
+      setActiveStem(newStem);
+      setActiveNodeId(newStem.tail?.id || null);
+      //do we need to delete the old stem?
+    } else {
+      const prev = activeStem.getNode(activeNodeId)?.prev;
+      const newActive = prev ? prev.id : activeStem.tail?.id;
+      setActiveNodeId(newActive || null);
+    }
+    //Always make sure there is at least one stem
+    if (stems.length < 1) {
+      setStems([new Stem()]);
+      setActiveStem(stems[0]);
+    }
   };
 
-  // TODO: implement
   const addChild = (text: string) => {
     const active = activeStem.getNode(activeNodeId);
     const childNode = new Node(text);
@@ -56,6 +70,9 @@ function Canvas() {
 
   const handleNodeClick = (id: string) => {
     setActiveNodeId(id);
+    //I think each node needs to know its stem to make this easier
+    // consider giving each stem an id
+    setActiveStem(stems.find((stem) => stem.getNode(id) !== undefined)!); 
   };
 
   return (
@@ -66,17 +83,12 @@ function Canvas() {
         removeBlock={deleteTextBlock}
         addChild={addChild}
       />
-      <StyledColumnContainer>
-        {stems.map((stem, i) => (
-          <TextColumn
-            key={i}
-            tail={stem.tail}
-            textBlocks={stem.getAllNodes()}
-            activeNodeId={activeNodeId}
-            handleNodeClick={handleNodeClick}
-          />
-        ))}
-      </StyledColumnContainer>
+
+      <ColumnContainer
+        stems={stems}
+        activeNodeId={activeNodeId}
+        handleNodeClick={handleNodeClick}
+      />
     </StyledCanvas>
   );
 }
