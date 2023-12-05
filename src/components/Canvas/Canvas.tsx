@@ -13,8 +13,6 @@ function Canvas() {
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [activeStem, setActiveStem] = useState<Stem<string>>(new Stem());
   const [stems, setStems] = useState<Stem<string>[]>([activeStem]);
-  // const [, forceUpdate] = useReducer(x => x + 1, 0);
-  //used to force re-render of component ffrom https://stackoverflow.com/questions/46240647/how-to-force-a-functional-react-component-to-render/53837442#53837442
 
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
@@ -26,13 +24,18 @@ function Canvas() {
   // TODO: getting null pointer error when deleting last node in stem -- fix this method
   const deleteTextBlock = () => {
     activeStem.removeNode(activeNodeId);
-
+    console.log("activeStem", activeStem);
     //Clean up stem if empty
     if (activeStem.tail === null) {
       const newStems = stems.filter((stem) => stem !== activeStem);
       console.log("stems", stems);
       console.log("newStems", newStems);
       setStems(newStems);
+      // ugly code-- no double nested if statements please
+      if (newStems.length < 1) {
+        console.log("stems empty setting new stem");
+        setStems([new Stem()]);
+      }
       const newStem = newStems[newStems.length - 1];
       console.log("stems empty setting new stem", newStem);
       console.log("stems", stems);
