@@ -22,35 +22,30 @@ function Canvas() {
 
   //This logic feels loose to me- make sure we cant delete a stem that still has nodes
   // TODO: getting null pointer error when deleting last node in stem -- fix this method
-  const deleteTextBlock = () => {
-    activeStem.removeNode(activeNodeId);
-    console.log("activeStem", activeStem);
-    //Clean up stem if empty
-    if (activeStem.tail === null) {
-      const newStems = stems.filter((stem) => stem !== activeStem);
-      console.log("stems", stems);
-      console.log("newStems", newStems);
-      setStems(newStems);
-      // ugly code-- no double nested if statements please
-      if (newStems.length < 1) {
-        console.log("stems empty setting new stem");
-        setStems([new Stem()]);
-      }
-      const newStem = newStems[newStems.length - 1];
-      console.log("stems empty setting new stem", newStem);
-      console.log("stems", stems);
-      setActiveStem(newStem);
-      setActiveNodeId(newStem.tail?.id || null);
-      //do we need to delete the old stem?
-    } else {
-      const prev = activeStem.getNode(activeNodeId)?.prev;
-      const newActive = prev ? prev.id : activeStem.tail?.id;
-      setActiveNodeId(newActive || null);
+  const handleDeleteBlock = () => {
+   //If theres no block to delete, do nothing
+    if (activeNodeId === null) {
+      return;
     }
-    //Always make sure there is at least one stem
-    if (stems.length < 1) {
-      setStems([new Stem()]);
-      setActiveStem(stems[0]);
+
+    activeStem.removeNode(activeNodeId);
+    //TODO: set active node to the prev node in the stem
+
+    //If theres still blocks in stem, do nothing
+    if (!activeStem.isEmpty()){
+      //we need to force a reload here to get the stems to rerender
+      return;
+    }
+
+    //If theres no blocks in stem, delete the stem
+    const updatedStems = stems.filter((stem) => stem !== activeStem);
+    setStems(updatedStems);
+
+    //If theres no stems, create a new stem
+    if (updatedStems.length === 0){
+      const newStem: Stem<string> = new Stem();
+      setStems([newStem]);
+      setActiveStem(newStem);
     }
   };
 
@@ -83,7 +78,7 @@ function Canvas() {
       <h2>Canvas</h2>
       <TextBlock
         addBlock={addTextBlock}
-        removeBlock={deleteTextBlock}
+        removeBlock={handleDeleteBlock}
         addChild={addChild}
       />
 

@@ -66,9 +66,13 @@ export class Stem<T> {
     return this.tail;
   }
 
-  getNode(id: string | null){
+  getNode(id: string | null) {
     const node = this.table.get(id || "");
-    return node
+    return node;
+  }
+
+  isEmpty() {
+    return this.table.size === 0;
   }
 
   // Beware the O(n)
