@@ -32,6 +32,8 @@ function Canvas() {
 
   //TODO: implement this in Redux
   const addChild = (text: string) => {
+    console.warn("This Function is not implemented yet: addChild");
+
     const active = activeStem.getNode(activeNodeId);
     const childNode = new Node(text);
     active?.addChild(childNode);
@@ -66,7 +68,6 @@ function Canvas() {
 
       <ColumnContainer
         stems={stems}
-        activeNodeId={activeNodeId}
         handleNodeClick={handleNodeClick}
       />
     </StyledCanvas>

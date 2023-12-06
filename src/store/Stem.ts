@@ -6,11 +6,12 @@ interface StemState {
   activeNodeId: string | null;
 }
 
-interface NodeState {
+export interface NodeState {
   id: string;
   prev: string | null; //deprecated
   next: string | null; //deprecated
   children: string[];
+  data: string;
 }
 
 const initialState: StemState = {
@@ -25,6 +26,7 @@ export const stemSlice = createSlice({
     createNode: (state, action) => {
       const node = new Node(action.payload);
       const nodeData: NodeState = node.getData();
+      state.activeNodeId = nodeData.id;
       state.nodes.push(nodeData);
     },
     removeNode: (state, action) => {

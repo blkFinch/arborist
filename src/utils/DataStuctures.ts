@@ -1,4 +1,4 @@
-// TODO: remove this and replace with state management in redux
+// TODO: convert this to a Node Constructor helper
 export class Node<T> {
   public data: T;
   public children: Node<T>[];
@@ -24,7 +24,7 @@ export class Node<T> {
 
   getData() {
     const serializedData = {
-      data: this.data,
+      data: this.data || "",
       id: this.id,
       prev: this.prev?.id || null,
       next: this.next?.id || null,
