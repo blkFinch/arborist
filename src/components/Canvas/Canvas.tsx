@@ -21,14 +21,11 @@ function Canvas() {
     activeStem.addNode(newNode);
   };
 
-  //This logic feels loose to me- make sure we cant delete a stem that still has nodes
-  // TODO: getting null pointer error when deleting last node in stem -- fix this method
   const handleDeleteBlock = () => {
    //If theres no block to delete, do nothing
     if (activeNodeId === null) {
       return;
     }
-
     //Delete the node
     dispatch(removeNode(activeNodeId));
   };
