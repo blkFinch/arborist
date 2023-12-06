@@ -3,21 +3,22 @@ import TextBlock from "./TextBlock";
 import { Node, Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { removeNode, setActiveNode } from "../../features/Stem";
 
 const StyledCanvas = styled.div`
   margin: 20px;
 `;
 
 function Canvas() {
-  // TODO: implement state management and use that for nodes
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [activeStem, setActiveStem] = useState<Stem<string>>(new Stem());
   const [stems, setStems] = useState<Stem<string>[]>([activeStem]);
+  const dispatch = useAppDispatch();
+  const activeNodeId = useAppSelector((state) => state.stem.activeNodeId);
 
   const addTextBlock = (text: string) => {
     const newNode = new Node(text);
     activeStem.addNode(newNode);
-    setActiveNodeId(newNode.id);
   };
 
   //This logic feels loose to me- make sure we cant delete a stem that still has nodes
@@ -28,27 +29,11 @@ function Canvas() {
       return;
     }
 
-    activeStem.removeNode(activeNodeId);
-    //TODO: set active node to the prev node in the stem
-
-    //If theres still blocks in stem, do nothing
-    if (!activeStem.isEmpty()){
-      //we need to force a reload here to get the stems to rerender
-      return;
-    }
-
-    //If theres no blocks in stem, delete the stem
-    const updatedStems = stems.filter((stem) => stem !== activeStem);
-    setStems(updatedStems);
-
-    //If theres no stems, create a new stem
-    if (updatedStems.length === 0){
-      const newStem: Stem<string> = new Stem();
-      setStems([newStem]);
-      setActiveStem(newStem);
-    }
+    //Delete the node
+    dispatch(removeNode(activeNodeId));
   };
 
+  //TODO: implement this in Redux
   const addChild = (text: string) => {
     const active = activeStem.getNode(activeNodeId);
     const childNode = new Node(text);
@@ -58,7 +43,7 @@ function Canvas() {
     newStem.addNode(childNode);
     setStems([...stems, newStem]);
     setActiveStem(newStem);
-    setActiveNodeId(childNode.id);
+    // setActiveNodeId(childNode.id);
     console.log(stems);
     // then organize child into next col
     // perhaps use an array of activeStems ?? or a linked list of stems??
@@ -67,7 +52,7 @@ function Canvas() {
   };
 
   const handleNodeClick = (id: string) => {
-    setActiveNodeId(id);
+    dispatch(setActiveNode(id));
     //I think each node needs to know its stem to make this easier
     // consider giving each stem an id
     setActiveStem(stems.find((stem) => stem.getNode(id) !== undefined)!); 

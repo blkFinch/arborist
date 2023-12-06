@@ -1,3 +1,4 @@
+// TODO: remove this and replace with state management in redux
 export class Node<T> {
   public data: T;
   public children: Node<T>[];
@@ -19,6 +20,17 @@ export class Node<T> {
 
   addChild(node: Node<T>) {
     this.children.push(node);
+  }
+
+  getData() {
+    const serializedData = {
+      data: this.data,
+      id: this.id,
+      prev: this.prev?.id || null,
+      next: this.next?.id || null,
+      children: this.children.map((child) => child.id),
+    };
+    return serializedData;
   }
 }
 
