@@ -4,7 +4,7 @@ import { Node, Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { removeNode, setActiveNode } from "../../store/Stem";
+import { removeNode, setActiveNode, createNode } from "../../store/Stem";
 
 const StyledCanvas = styled.div`
   margin: 20px;
@@ -16,10 +16,10 @@ function Canvas() {
   const dispatch = useAppDispatch();
   const activeNodeId = useAppSelector((state) => state.stem.activeNodeId);
 
+  
   const addTextBlock = (text: string) => {
-    const newNode = new Node(text);
-    activeStem.addNode(newNode);
-  };
+    dispatch(createNode(text));
+  }
 
   const handleDeleteBlock = () => {
    //If theres no block to delete, do nothing
