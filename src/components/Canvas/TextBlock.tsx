@@ -1,6 +1,8 @@
 import * as Toolbar from "@radix-ui/react-toolbar";
 import { useState } from "react";
 import styled from "styled-components";
+import { useAppDispatch } from "../../hooks";
+import { createNode } from "../../features/Stem";
 
 const StyledToolbar = styled(Toolbar.Root)`
   display: flex;
@@ -30,11 +32,16 @@ interface textBlockProps {
 
 // TODO: this is a scaffold control. This should be renamed. In the future this will be replaced
 //       by a rich text editor housed in TextNode
-function TextBlock({ addBlock, removeBlock, addChild }: textBlockProps) {
+function TextBlock({ removeBlock, addChild }: textBlockProps) {
   const [text, setText] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  };
+
+  const addNode = (text: string) => {
+    dispatch(createNode(text));
   };
 
   return (
@@ -42,7 +49,7 @@ function TextBlock({ addBlock, removeBlock, addChild }: textBlockProps) {
       <textarea id="text-node" onChange={handleTextChange}></textarea>
 
       <StyledToolbar>
-        <StyledButton onClick={() => addBlock(text)}>add</StyledButton>
+        <StyledButton onClick={() => addNode(text)}>add</StyledButton>
         <StyledButton onClick={() => addChild(text)}>child</StyledButton>
         <StyledButton onClick={() => removeBlock()}>delete</StyledButton>
       </StyledToolbar>

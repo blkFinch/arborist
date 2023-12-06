@@ -1,5 +1,7 @@
 import TextNode from "./TextNode";
 import { Node } from "../../utils/DataStuctures";
+import { useAppSelector } from "../../hooks";
+
 
 interface TextColumnProps {
   tail: Node<string> | null;
@@ -9,18 +11,19 @@ interface TextColumnProps {
 }
 
 function TextColumn({
-  tail,
-  textBlocks,
   activeNodeId,
   handleNodeClick,
 }: TextColumnProps) {
-  if (tail === null) {
+  
+  const nodes = useAppSelector((state) => state.stem.nodes);
+
+  if (nodes.length < 1) {
     return <div>no text blocks</div>;
   }
 
   return (
     <div>
-      {textBlocks.map((nodeData) => (
+      {nodes.map((nodeData: Node<string>) => (
         <TextNode
           key={nodeData.id}
           text={nodeData.data}
