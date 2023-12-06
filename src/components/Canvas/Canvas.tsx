@@ -4,7 +4,7 @@ import { Node, Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { removeNode, setActiveNode } from "../../features/Stem";
+import { removeNode, setActiveNode } from "../../store/Stem";
 
 const StyledCanvas = styled.div`
   margin: 20px;

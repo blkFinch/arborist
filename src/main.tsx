@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import stemReducer from "./features/Stem";
+import stemReducer from "./store/Stem.ts";
 
 //TODO: extract and define in store.ts
 const store = configureStore({

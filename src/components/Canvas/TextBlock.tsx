@@ -2,7 +2,7 @@ import * as Toolbar from "@radix-ui/react-toolbar";
 import { useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch } from "../../hooks";
-import { createNode } from "../../features/Stem";
+import { createNode } from "../../store/Stem";
 
 const StyledToolbar = styled(Toolbar.Root)`
   display: flex;
