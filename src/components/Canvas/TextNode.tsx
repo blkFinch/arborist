@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 
 interface TextNodeProps {
   text: string;
-  key: string;
   active: boolean;
   handleNodeClick: () => void;
 }
 
 interface StyledTextNodeProps {
-  active: boolean;
+  //this needs to be a string because boolean is causing some error with TS
+  active: string;
 }
 
 const StyledTextNode = styled.div<StyledTextNodeProps>`
@@ -25,7 +25,7 @@ const StyledTextNode = styled.div<StyledTextNodeProps>`
     color: ${(props) => props.theme.colors.text};
   }
   ${(props) =>
-    props.active &&
+    props.active === 'true' &&
     css`
       background-color: ${(props) => props.theme.colors.soft};
       color: ${(props) => props.theme.colors.dark};
@@ -37,11 +37,10 @@ const StyledContent = styled.div`
 `;
 
 // TODO: when active, make editable
-function TextNode({ text, key, active, handleNodeClick }: TextNodeProps) {
+function TextNode({ text, active, handleNodeClick }: TextNodeProps) {
   return (
     <StyledTextNode
-      id={key}
-      active={active}
+      active={active.toString()}
       onClick={handleNodeClick}
     >
         <StyledContent>
