@@ -10,13 +10,11 @@ const StyledColumnContainer = styled.div`
 
 interface ColumnContainerProps {
   stems: Stem<string>[];
-  activeNodeId: string | null;
   handleNodeClick: (id: string) => void;
 }
 
 function ColumnContainer({
   stems,
-  activeNodeId,
   handleNodeClick,
 }: ColumnContainerProps) {
   return (
@@ -24,9 +22,6 @@ function ColumnContainer({
       {stems.map((stem, i) => (
         <TextColumn
           key={i}
-          tail={stem.tail}
-          textBlocks={stem.getAllNodes()}
-          activeNodeId={activeNodeId}
           handleNodeClick={handleNodeClick}
         />
       ))}

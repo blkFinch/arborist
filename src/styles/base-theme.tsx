@@ -10,6 +10,7 @@ const theme : DefaultTheme = {
     primary: "#3500d3",
     secondary: "#190061",
     warning: "yellow",
+    danger: "red",
     soft: "#f5f5f5",
     background: "#282828",
     info: "#240090",
