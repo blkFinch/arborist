@@ -15,10 +15,6 @@ export interface NodeState {
   data: string;
 }
 
-export interface BranchState {
-  nodeIds: string[];
-}
-
 const initialState: DocumentState = {
   nodes: [],
   activeNodeId: null,
