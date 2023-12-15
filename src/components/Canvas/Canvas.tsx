@@ -1,6 +1,4 @@
-import { useState } from "react";
 import TextBlock from "./TextBlock";
-import { Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -11,8 +9,6 @@ const StyledCanvas = styled.div`
 `;
 
 function Canvas() {
-  const [activeStem, setActiveStem] = useState<Stem<string>>(new Stem());
-  const [stems] = useState<Stem<string>[]>([activeStem]);
   const dispatch = useAppDispatch();
   const activeNodeId = useAppSelector((state) => state.document.activeNodeId);
   
@@ -35,7 +31,6 @@ function Canvas() {
 
   const handleNodeClick = (id: string) => {
     dispatch(setActiveNode(id));
-    setActiveStem(stems.find((stem) => stem.getNode(id) !== undefined)!); 
   };
 
   return (
@@ -48,7 +43,6 @@ function Canvas() {
       />
 
       <ColumnContainer
-        stems={stems}
         handleNodeClick={handleNodeClick}
       />
     </StyledCanvas>

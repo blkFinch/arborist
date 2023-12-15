@@ -1,4 +1,3 @@
-import { Stem } from "../../utils/DataStuctures";
 import TextColumn from "./TextColumn";
 import styled from "styled-components";
 import { selectBranches } from "../../store/Document";
@@ -11,7 +10,6 @@ const StyledColumnContainer = styled.div`
 `;
 
 interface ColumnContainerProps {
-  stems: Stem<string>[];
   handleNodeClick: (id: string) => void;
 }
 

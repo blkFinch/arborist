@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Node } from "../utils/DataStuctures";
 
+//DEPRECATED use document instead
 interface StemState {
   nodes: NodeState[];
   activeNodeId: string | null;
