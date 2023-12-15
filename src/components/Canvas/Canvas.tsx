@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TextBlock from "./TextBlock";
-import { Node, Stem } from "../../utils/DataStuctures";
+import { Stem } from "../../utils/DataStuctures";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -29,15 +29,12 @@ function Canvas() {
     dispatch(removeNode(activeNodeId));
   };
 
-  //TODO: implement this in Redux
   const addChild = (text: string) => {
     dispatch(createChildNode(text));
   };
 
   const handleNodeClick = (id: string) => {
     dispatch(setActiveNode(id));
-    //I think each node needs to know its stem to make this easier
-    // consider giving each stem an id
     setActiveStem(stems.find((stem) => stem.getNode(id) !== undefined)!); 
   };
 

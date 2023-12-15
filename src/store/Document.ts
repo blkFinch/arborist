@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { Node } from "../utils/DataStuctures";
 
 interface DocumentState {
@@ -46,9 +46,33 @@ export const documentSlice = createSlice({
       const index = state.nodes.findIndex(
         (node) => node.id === state.activeNodeId
       );
-      state.nodes[index].children.push(nodeData.id);
+      state.nodes[index].children.push(JSON.stringify(nodeData));
     },
   },
+});
+
+const selectNodes = (state: DocumentState) => state.nodes;
+
+export const selectBranches = createSelector(selectNodes, (nodes) => {
+  const branches: NodeState[][] = [];
+
+  function dfs(node: NodeState, depth: number) {
+    if (branches[depth] === undefined) branches[depth] = [];
+    branches[depth].push(node);
+
+    if (node.children && node.children.length > 0) {
+      node.children.forEach((child) => {
+        const childNode: NodeState = JSON.parse(child);
+        dfs(childNode, depth + 1);
+      });
+    }
+  }
+
+  nodes.forEach((node) => {
+    dfs(node, 0);
+  });
+
+  return branches;
 });
 
 export const { createNode, removeNode, setActiveNode, createChildNode } =
