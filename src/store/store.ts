@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import stemReducer from "./Stem.ts";
+import documentReducer from "./Document.ts";
 
-//TODO: extract and define in store.ts
 const store = configureStore({
   reducer: {
-    stem: stemReducer,
+    document: documentReducer,
   },
+  devTools: true,
 });
 
 // Getting types as per https://redux.js.org/usage/usage-with-typescript

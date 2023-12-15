@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MenuIcon } from "../icons/menuIcon";
+import { MenuIcon } from "../Icons/menuIcon";
 import Dropdown  from "./Dropdown"
 
 const Navlist = styled.ul`
