@@ -14,13 +14,23 @@ const initialState: DocumentState = {
 };
 
 export const documentSlice = createSlice({
-  name: "stem",
+  name: "document",
   initialState,
   reducers: {
+    //Add Below Active
     createNode: (state, action) => {
       const node = buildNode(action.payload);
+      const activeNode = getNodeById(state.nodes, state.activeNodeId!);
+      if (activeNode?.parent_id) {
+        const parent = getNodeById(state.nodes, activeNode.parent_id);
+        if (parent) {
+          node.parent_id = parent.id;
+          parent.children.push(node);
+        }
+      } else {
+        state.nodes.push(node);
+      }
       state.activeNodeId = node.id;
-      state.nodes.push(node);
     },
     removeNode: (state, action) => {
       const filteredNodes: Node[] = filterNodesById(
@@ -31,11 +41,15 @@ export const documentSlice = createSlice({
     },
     setActiveNode: (state, action) => {
       state.activeNodeId = action.payload;
-    }, //TODO: createChildNode needs to use dfs to add child to child
+    },
+    //Add to right of active
     createChildNode: (state, action) => {
       const node = buildNode(action.payload);
       const parent = getNodeById(state.nodes, state.activeNodeId!);
-      if (parent) parent.children.push(node);
+      if (parent) {
+        node.parent_id = parent.id;
+        parent.children.push(node);
+      }
     },
   },
 });

@@ -2,6 +2,7 @@ export interface Node {
   content: string;
   id: string;
   children: Node[];
+  parent_id: string | "";
 }
 
 export function buildNode(data: string | null = null) {
@@ -9,6 +10,7 @@ export function buildNode(data: string | null = null) {
     content: data || "",
     id: Date.now().toString(36) + Math.random().toString(36),
     children: [],
+    parent_id: "",
   };
 }
 
