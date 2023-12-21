@@ -1,13 +1,13 @@
 import TextNode from "./TextNode";
 import { useAppSelector } from "../../hooks";
-import { NodeState } from "../../store/Document";
+import { Node } from "../../utils/nodeHelpers";
 
 interface TextColumnProps {
+  nodes: Node[];
   handleNodeClick: (id: string) => void;
 }
 
-function TextColumn({ handleNodeClick }: TextColumnProps) {
-  const nodes = useAppSelector((state) => state.document.nodes);
+function TextColumn({ handleNodeClick, nodes }: TextColumnProps) {
   const activeNodeId = useAppSelector((state) => state.document.activeNodeId);
 
   if (nodes.length < 1) {
@@ -16,10 +16,10 @@ function TextColumn({ handleNodeClick }: TextColumnProps) {
 
   return (
     <div>
-      {nodes.map((nodeData: NodeState) => (
+      {nodes.map((nodeData: Node) => (
         <TextNode
           key={nodeData.id}
-          text={nodeData.data}
+          text={nodeData.content}
           active={nodeData.id === activeNodeId}
           handleNodeClick={() => handleNodeClick(nodeData.id)}
         />
