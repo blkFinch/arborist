@@ -49,7 +49,7 @@ export function filterNodesById(nodes: Node[], id: string): Node[] {
 
 // applies callback to each node in the tree
 // in depth-first order
-type DepthFirstSearchCallback = (node: Node, depth: number) => void;
+export type DepthFirstSearchCallback = (node: Node, depth: number) => void;
 
 export function depthFirstSearch(
   nodes: Node[],

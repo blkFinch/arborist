@@ -1,6 +1,6 @@
 import TextNode from "./TextNode";
 import { useAppSelector } from "../../hooks";
-import { Node } from "../../utils/Node";
+import { Node } from "../../utils/nodeHelpers";
 
 interface TextColumnProps {
   nodes: Node[];

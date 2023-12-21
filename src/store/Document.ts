@@ -1,5 +1,11 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { Node, buildNode, filterNodesById, getNodeById } from "../utils/Node";
+import {
+  Node,
+  buildNode,
+  depthFirstSearch,
+  filterNodesById,
+  getNodeById,
+} from "../utils/nodeHelpers";
 
 interface DocumentState {
   title: string;
@@ -18,8 +24,8 @@ export const documentSlice = createSlice({
   initialState,
   reducers: {
     //Add Below Active
-    createNode: (state, action) => {
-      const node = buildNode(action.payload);
+    createNode: (state, { payload }) => {
+      const node = buildNode(payload);
       const activeNode = getNodeById(state.nodes, state.activeNodeId!);
       if (activeNode?.parent_id) {
         const parent = getNodeById(state.nodes, activeNode.parent_id);
@@ -32,19 +38,15 @@ export const documentSlice = createSlice({
       }
       state.activeNodeId = node.id;
     },
-    removeNode: (state, action) => {
-      const filteredNodes: Node[] = filterNodesById(
-        state.nodes,
-        action.payload
-      );
-      state.nodes = filteredNodes;
+    removeNode: (state, { payload }) => {
+      state.nodes = [...filterNodesById(state.nodes, payload)];
     },
-    setActiveNode: (state, action) => {
-      state.activeNodeId = action.payload;
+    setActiveNode: (state, { payload }) => {
+      state.activeNodeId = payload;
     },
     //Add to right of active
-    createChildNode: (state, action) => {
-      const node = buildNode(action.payload);
+    createChildNode: (state, { payload }) => {
+      const node = buildNode(payload);
       const parent = getNodeById(state.nodes, state.activeNodeId!);
       if (parent) {
         node.parent_id = parent.id;
@@ -62,22 +64,11 @@ const selectNodes = (state: DocumentState) => state.nodes;
 export const selectBranches = createSelector(selectNodes, (nodes) => {
   const branches: Node[][] = [];
 
-  // performs depth-first search on the tree and adds node
-  // to column corresponding to its depth
-  function dfs(node: Node, depth: number) {
-    if (branches[depth] === undefined) branches[depth] = [];
-    branches[depth].push(node);
-
-    if (node.children && node.children.length > 0) {
-      node.children.forEach((child) => {
-        const childNode: Node = child;
-        dfs(childNode, depth + 1);
-      });
-    }
-  }
-
   nodes.forEach((node) => {
-    dfs(node, 0);
+    depthFirstSearch([node], (node, depth) => {
+      if (!branches[depth]) branches[depth] = [];
+      branches[depth].push(node);
+    });
   });
 
   return branches;
