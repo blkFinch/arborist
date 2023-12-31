@@ -37,17 +37,34 @@ const StyledContent = styled.div`
 `;
 
 // TODO: when active, make editable
+// Note that we need to implement a state dispatch from here on completion of editting text
 function TextNode({ text, active, handleNodeClick }: TextNodeProps) {
-  return (
-    <StyledTextNode
-      active={active.toString()}
-      onClick={handleNodeClick}
-    >
-        <StyledContent>
-            {text}
-        </StyledContent>
-    </StyledTextNode>
-  );
+  if(active==true){
+    return (
+      <StyledTextNode
+        active={active.toString()}
+        onClick={handleNodeClick}
+      >
+          <StyledContent>
+            <textarea name="" id="" cols="30" rows="10">{text}</textarea>
+            
+          </StyledContent>
+      </StyledTextNode>
+    );
+  }
+  else{
+    return (
+      <StyledTextNode
+        active={active.toString()}
+        onClick={handleNodeClick}
+      >
+          <StyledContent>
+   {text}
+          </StyledContent>
+      </StyledTextNode>
+    );
+  }
+  
 }
 
 export default TextNode;
