@@ -53,6 +53,12 @@ export const documentSlice = createSlice({
         parent.children.push(node);
       }
     },
+    editNodeData: (state, { payload }) => {
+      const node = getNodeById(state.nodes, state.activeNodeId!);
+      if (node) {
+        node.content = payload;
+      }
+    },
   },
 });
 
@@ -74,6 +80,11 @@ export const selectBranches = createSelector(selectNodes, (nodes) => {
   return branches;
 });
 
-export const { createNode, removeNode, setActiveNode, createChildNode } =
-  documentSlice.actions;
+export const {
+  createNode,
+  removeNode,
+  setActiveNode,
+  createChildNode,
+  editNodeData,
+} = documentSlice.actions;
 export default documentSlice.reducer;
