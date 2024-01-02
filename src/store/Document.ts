@@ -70,11 +70,9 @@ const selectNodes = (state: DocumentState) => state.nodes;
 export const selectBranches = createSelector(selectNodes, (nodes) => {
   const branches: Node[][] = [];
 
-  nodes.forEach((node) => {
-    depthFirstSearch([node], (node, depth) => {
-      if (!branches[depth]) branches[depth] = [];
-      branches[depth].push(node);
-    });
+  depthFirstSearch(nodes, (node, depth) => {
+    if (!branches[depth]) branches[depth] = [];
+    branches[depth].push(node);
   });
 
   return branches;
