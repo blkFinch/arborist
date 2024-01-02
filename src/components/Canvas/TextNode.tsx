@@ -72,6 +72,7 @@ const TopAddButton = styled.button`
   grid-column: 2;
   grid-row: 1;
   align-self: flex-start;
+  pointer-events: auto;
 `;
 
 const RightAddButton = styled.button`
@@ -82,6 +83,7 @@ const RightAddButton = styled.button`
   grid-row: 2;
   align-self: center;
   justify-self: end;
+  pointer-events: auto;
 `;
 
 const BottomAddButton = styled.button`
@@ -91,6 +93,7 @@ const BottomAddButton = styled.button`
   grid-column: 2;
   grid-row: 3;
   align-self: flex-end;
+  pointer-events: auto;
 `;
 
 const StyledContent = styled.div`
@@ -110,7 +113,7 @@ function TextNode({ text, active, handleNodeClick }: TextNodeProps) {
     return (
       <StyledTextNode active={active.toString()} onClick={handleNodeClick}>
         <AddButtonsWrapper>
-          <TopAddButton>+</TopAddButton>
+          <TopAddButton onClick={() => {console.log("button click")}}>+</TopAddButton>
           <RightAddButton>+</RightAddButton>
           <BottomAddButton>+</BottomAddButton>
         </AddButtonsWrapper>
