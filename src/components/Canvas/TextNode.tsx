@@ -1,11 +1,12 @@
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../hooks";
-import { editNodeData } from "../../store/Document";
+import { editNodeData, removeNode } from "../../store/Document";
 
 interface TextNodeProps {
   text: string;
   active: boolean;
+  nodeId: string;
   handleNodeClick: () => void;
 }
 
@@ -18,9 +19,11 @@ const StyledTextArea = styled.textarea`
   border: none;
   outline: none;
   width: 100%;
-  height: 100%;
+  height: inherit;
+  min-height: 80px;
   max-width: 100%;
 `;
+
 //Had to get funky with the css here:
 // The text node is position relative so that the add buttons can be position absolute
 // while remaining in the same container as the text node. This allows them to float over
@@ -33,7 +36,7 @@ const StyledTextNode = styled.div<StyledTextNodeProps>`
   width: 400px;
   min-height: 100px;
   height: auto;
-  position: relative; 
+  position: relative;
   background-color: ${(props) => props.theme.colors.secondary};
   &:hover,
   &:focus {
@@ -61,59 +64,87 @@ const AddButtonsWrapper = styled.div`
   width: inherit;
   top: 0;
   bottom: 0;
-  pointer-events: none;
+  pointer-events: none; /* allows the text area to be selected */
   justify-items: center;
 `;
 
-const TopAddButton = styled.button`
-  background-color: #fff; /* Set your desired background color */
+const BaseButton = styled.button`
+  background-color: #fff;
   padding: 2px 5px;
   cursor: pointer;
+  pointer-events: auto;
+  opacity: 0.5;
+  &:hover{
+    opacity: 1;
+  }
+`;
+
+const TopAddButton = styled(BaseButton)`
   grid-column: 2;
   grid-row: 1;
   align-self: flex-start;
-  pointer-events: auto;
 `;
 
-const RightAddButton = styled.button`
-  background-color: #fff; /* Set your desired background color */
-  padding: 2px 5px;
-  cursor: pointer;
+const DeleteButton = styled(BaseButton)`
+background-color: ${(props) => props.theme.colors.danger};
+  grid-column: 3;
+  grid-row: 1;
+  align-self: flex-start;
+  justify-self: end;
+`;
+
+const RightAddButton = styled(BaseButton)`
   grid-column: 3;
   grid-row: 2;
   align-self: center;
   justify-self: end;
-  pointer-events: auto;
 `;
 
-const BottomAddButton = styled.button`
-  background-color: #fff; /* Set your desired background color */
-  padding: 2px 5px;
-  cursor: pointer;
+const BottomAddButton = styled(BaseButton)`
   grid-column: 2;
   grid-row: 3;
   align-self: flex-end;
-  pointer-events: auto;
 `;
 
 const StyledContent = styled.div`
   padding: 5px 10px;
 `;
 
-function TextNode({ text, active, handleNodeClick }: TextNodeProps) {
+function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
   const [textAreaValue, setTextAreaValue] = useState(text || "");
   const dispatch = useAppDispatch();
+
+  //when the text prop changes, update the text area value
+  //otherwise the text prop only updates when the node is mounted
+  // and the text area value will not update on select 
+  useEffect(() => {
+    setTextAreaValue(text || "");
+  }, [text]);
+
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(e.target.value);
   };
+
   const handleNodeBlur = () => {
     dispatch(editNodeData(textAreaValue));
   };
+
+  const handleNodeDelete = () => {
+    dispatch(removeNode(nodeId));
+  }
+
   if (active == true) {
     return (
-      <StyledTextNode active={active.toString()} onClick={handleNodeClick}>
+      <StyledTextNode active={active.toString()} 
+      onClick={handleNodeClick} onMouseLeave={handleNodeBlur}>
         <AddButtonsWrapper>
-          <TopAddButton onClick={() => {console.log("button click")}}>+</TopAddButton>
+          <TopAddButton
+            onClick={() => {
+            }}
+          >
+            +
+          </TopAddButton>
+          <DeleteButton onClick={handleNodeDelete}>x</DeleteButton>
           <RightAddButton>+</RightAddButton>
           <BottomAddButton>+</BottomAddButton>
         </AddButtonsWrapper>
@@ -128,7 +159,7 @@ function TextNode({ text, active, handleNodeClick }: TextNodeProps) {
     );
   } else {
     return (
-      <StyledTextNode active={active.toString()} onClick={handleNodeClick}>
+      <StyledTextNode active={active.toString()} onClick={handleNodeClick} onMouseEnter={handleNodeClick}>
         <StyledContent>{text}</StyledContent>
       </StyledTextNode>
     );
