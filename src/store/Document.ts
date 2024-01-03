@@ -31,10 +31,37 @@ export const documentSlice = createSlice({
         const parent = getNodeById(state.nodes, activeNode.parent_id);
         if (parent) {
           node.parent_id = parent.id;
-          parent.children.push(node);
+          const index = parent.children.findIndex(
+            (node) => node.id === activeNode?.id
+          );
+          parent.children.splice(index + 1, 0, node);
         }
       } else {
-        state.nodes.push(node);
+        const index = state.nodes.findIndex(
+          (node) => node.id === activeNode?.id
+        );
+        state.nodes.splice(index + 1, 0, node);
+      }
+      state.activeNodeId = node.id;
+    },
+    //Add Above Active
+    createNodeAbove: (state, { payload }) => {
+      const node = buildNode(payload);
+      const activeNode = getNodeById(state.nodes, state.activeNodeId!);
+      if (activeNode?.parent_id) {
+        const parent = getNodeById(state.nodes, activeNode.parent_id);
+        if (parent) {
+          node.parent_id = parent.id;
+          const index = parent.children.findIndex(
+            (node) => node.id === activeNode?.id
+          );
+          parent.children.splice(index, 0, node);
+        }
+      } else {
+        const index = state.nodes.findIndex(
+          (node) => node.id === activeNode?.id
+        );
+        state.nodes.splice(index, 0, node);
       }
       state.activeNodeId = node.id;
     },
@@ -80,6 +107,7 @@ export const selectBranches = createSelector(selectNodes, (nodes) => {
 
 export const {
   createNode,
+  createNodeAbove,
   removeNode,
   setActiveNode,
   createChildNode,

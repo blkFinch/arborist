@@ -1,7 +1,13 @@
 import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../hooks";
-import { editNodeData, removeNode } from "../../store/Document";
+import {
+  editNodeData,
+  removeNode,
+  createNode,
+  createNodeAbove,
+  createChildNode,
+} from "../../store/Document";
 
 interface TextNodeProps {
   text: string;
@@ -74,7 +80,7 @@ const BaseButton = styled.button`
   cursor: pointer;
   pointer-events: auto;
   opacity: 0.5;
-  &:hover{
+  &:hover {
     opacity: 1;
   }
 `;
@@ -86,7 +92,7 @@ const TopAddButton = styled(BaseButton)`
 `;
 
 const DeleteButton = styled(BaseButton)`
-background-color: ${(props) => props.theme.colors.danger};
+  background-color: ${(props) => props.theme.colors.danger};
   grid-column: 3;
   grid-row: 1;
   align-self: flex-start;
@@ -116,7 +122,7 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
 
   //when the text prop changes, update the text area value
   //otherwise the text prop only updates when the node is mounted
-  // and the text area value will not update on select 
+  // and the text area value will not update on select
   useEffect(() => {
     setTextAreaValue(text || "");
   }, [text]);
@@ -131,22 +137,32 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
 
   const handleNodeDelete = () => {
     dispatch(removeNode(nodeId));
-  }
+  };
+
+  const handleAddBelow = () => {
+    dispatch(createNode(""));
+  };
+
+  const handleAddAbove = () => {
+    dispatch(createNodeAbove(""));
+  };
+
+  const handleAddChild = () => {
+    dispatch(createChildNode(""));
+  };
 
   if (active == true) {
     return (
-      <StyledTextNode active={active.toString()} 
-      onClick={handleNodeClick} onMouseLeave={handleNodeBlur}>
+      <StyledTextNode
+        active={active.toString()}
+        onClick={handleNodeClick}
+        onMouseLeave={handleNodeBlur}
+      >
         <AddButtonsWrapper>
-          <TopAddButton
-            onClick={() => {
-            }}
-          >
-            +
-          </TopAddButton>
+          <TopAddButton onClick={handleAddAbove}>+</TopAddButton>
           <DeleteButton onClick={handleNodeDelete}>x</DeleteButton>
-          <RightAddButton>+</RightAddButton>
-          <BottomAddButton>+</BottomAddButton>
+          <RightAddButton onClick={handleAddChild}>+</RightAddButton>
+          <BottomAddButton onClick={handleAddBelow}>+</BottomAddButton>
         </AddButtonsWrapper>
         <StyledContent>
           <StyledTextArea
@@ -159,7 +175,11 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
     );
   } else {
     return (
-      <StyledTextNode active={active.toString()} onClick={handleNodeClick} onMouseEnter={handleNodeClick}>
+      <StyledTextNode
+        active={active.toString()}
+        onClick={handleNodeClick}
+        onMouseEnter={handleNodeClick}
+      >
         <StyledContent>{text}</StyledContent>
       </StyledTextNode>
     );
