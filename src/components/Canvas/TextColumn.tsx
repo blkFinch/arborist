@@ -21,6 +21,7 @@ function TextColumn({ handleNodeClick, nodes }: TextColumnProps) {
           key={nodeData.id}
           text={nodeData.content}
           active={nodeData.id === activeNodeId}
+          nodeId={nodeData.id}
           handleNodeClick={() => handleNodeClick(nodeData.id)}
         />
       ))}

@@ -19,7 +19,6 @@ function ColumnContainer({ handleNodeClick }: ColumnContainerProps) {
   // I wonder if we can abstract this into a hook?
   const columns = selectBranches(useAppSelector((state) => state.document));
 
-  console.log(columns);
   return (
     <StyledColumnContainer>
       {columns.map((column, i) => (
