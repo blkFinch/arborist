@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
+import { useHotkeys } from 'react-hotkeys-hook'
 import { useAppDispatch } from "../../hooks";
 import {
   editNodeData,

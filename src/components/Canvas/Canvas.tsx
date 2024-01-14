@@ -1,8 +1,9 @@
 import TextBlock from "./TextBlock";
 import styled from "styled-components";
 import ColumnContainer from "./ColumnContainer";
+import { useHotkeys } from 'react-hotkeys-hook'
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { removeNode, setActiveNode, createNode, createChildNode } from "../../store/Document";
+import { removeNode, setActiveNode, createNode, createChildNode, createNodeAbove } from "../../store/Document";
 
 const StyledCanvas = styled.div`
   margin: 20px;
@@ -11,6 +12,11 @@ const StyledCanvas = styled.div`
 function Canvas() {
   const dispatch = useAppDispatch();
   const activeNodeId = useAppSelector((state) => state.document.activeNodeId);
+
+  
+  useHotkeys('ctrl+k', () => dispatch(createNode("")))
+  useHotkeys('ctrl+l', () => dispatch(createChildNode("")))
+  useHotkeys('ctrl+i', () => dispatch(createNodeAbove("")))
   
   const addTextBlock = (text: string) => {
     dispatch(createNode(text));
