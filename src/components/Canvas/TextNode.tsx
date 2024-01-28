@@ -8,6 +8,7 @@ import {
   createNodeAbove,
   createChildNode,
 } from "../../store/Document";
+import MDEditor from "@uiw/react-md-editor";
 
 interface TextNodeProps {
   text: string;
@@ -113,7 +114,7 @@ const BottomAddButton = styled(BaseButton)`
 `;
 
 const StyledContent = styled.div`
-  padding: 5px 10px;
+  padding: 10px 20px;
 `;
 
 function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
@@ -127,8 +128,13 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
     setTextAreaValue(text || "");
   }, [text]);
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(e.target.value);
+  const handleTextChange = (
+    value?: string,
+    e?: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (e !== undefined) {
+      setTextAreaValue(e.target.value);
+    }
   };
 
   const handleNodeBlur = () => {
@@ -165,10 +171,13 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
           <BottomAddButton onClick={handleAddBelow}>+</BottomAddButton>
         </AddButtonsWrapper>
         <StyledContent>
-          <StyledTextArea
+          <MDEditor
             onChange={handleTextChange}
             onBlur={handleNodeBlur}
             value={textAreaValue}
+            hideToolbar={true}
+            preview="edit"
+            style={{ background: "white", color: "black" }}
           />
         </StyledContent>
       </StyledTextNode>
