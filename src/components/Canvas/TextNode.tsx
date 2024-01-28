@@ -189,7 +189,10 @@ function TextNode({ text, nodeId, active, handleNodeClick }: TextNodeProps) {
         onClick={handleNodeClick}
         onMouseEnter={handleNodeClick}
       >
-        <StyledContent>{text}</StyledContent>
+        <StyledContent>
+          <MDEditor.Markdown source={text} 
+          style={{ background: "transparent"}}/>
+        </StyledContent>
       </StyledTextNode>
     );
   }
